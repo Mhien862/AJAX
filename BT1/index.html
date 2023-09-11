@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="mealList">
+        <h2>Menu</h2>
+    </div>
+</body>
+<script>
+    const apiUrl = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood';
+
+fetch(apiUrl)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Lỗi khi lấy dữ liệu từ API:', error);
+  });
+
+  const mealList = document.getElementById('mealList');
+
+  function displayMeals(meals) {
+  mealList.innerHTML = ''; 
+
+  meals.forEach(meal => {
+    const mealDiv = document.createElement('div');
+    mealDiv.classList.add('meal-item');
+
+    const mealName = document.createElement('h2');
+    mealName.textContent = meal.strMeal;
+
+    const mealImage = document.createElement('img');
+    mealImage.src = meal.strMealThumb;
+
+    mealDiv.appendChild(mealImage);
+    mealDiv.appendChild(mealName);
+
+    mealList.appendChild(mealDiv);
+  });
+}
+
+// Gọi hàm hiển thị danh sách món ăn khi dữ liệu được tải
+fetch(apiUrl)
+  .then(response => response.json())
+  .then(data => {
+    const meals = data.meals;
+    if (meals) {
+      displayMeals(meals);
+    } else {
+      console.error('no food');
+    }
+  })
+  .catch(error => {
+    console.error('no API:', error);
+  });
+
+</script>
+</html>
